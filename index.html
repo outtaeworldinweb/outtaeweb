@@ -6,18 +6,23 @@
     <title>Music Clef Quiz Game</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #f0f4f8; display: flex; justify-content: center; padding: 20px; }
-        #game-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 800px; width: 100%; }
+        #game-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 800px; width: 100%; box-sizing: border-box; }
         #settings { margin-bottom: 20px; padding: 15px; background: #eef2f7; border-radius: 8px; }
-        select, button { padding: 8px 12px; margin: 0 10px; font-size: 16px; border-radius: 4px; border: 1px solid #ccc; }
+        select, button { padding: 8px 12px; margin: 5px 10px; font-size: 16px; border-radius: 4px; border: 1px solid #ccc; }
         button { background-color: #007bff; color: white; cursor: pointer; border: none; }
         button:hover { background-color: #0056b3; }
-        #canvas-container { display: flex; justify-content: center; margin: 20px 0; }
+        #canvas-container { display: flex; justify-content: center; margin: 20px 0; min-height: 200px; }
         #feedback { font-size: 20px; font-weight: bold; height: 30px; margin-bottom: 20px; color: #333; }
-        #piano-container { display: flex; justify-content: center; overflow-x: auto; padding: 10px 0; }
-        .piano { display: flex; position: relative; height: 200px; padding: 10px; background: #222; border-radius: 8px; user-select: none; }
-        .white-key { width: 40px; height: 180px; background: white; border: 1px solid #ccc; border-radius: 0 0 4px 4px; box-shadow: inset 0 0 5px #ccc; position: relative; cursor: pointer; z-index: 1; box-sizing: border-box; }
+        #piano-container { display: flex; justify-content: center; overflow-x: auto; width: 100%; padding: 10px 0; }
+        
+        /* The main piano bed */
+        .piano { display: flex; position: relative; height: 200px; padding: 10px; background: #222; border-radius: 8px; user-select: none; box-sizing: content-box; }
+        
+        /* CRUCIAL FIX: Added flex-shrink: 0 to force keys to maintain their exact widths */
+        .white-key { width: 40px; height: 180px; background: white; border: 1px solid #ccc; border-radius: 0 0 4px 4px; box-shadow: inset 0 0 5px #ccc; position: relative; cursor: pointer; z-index: 1; box-sizing: border-box; flex-shrink: 0; }
         .white-key:active, .white-key.active { background: #e0e0e0; }
-        .black-key { width: 24px; height: 110px; background: #111; border-radius: 0 0 3px 3px; position: absolute; z-index: 2; cursor: pointer; box-sizing: border-box; }
+        
+        .black-key { width: 24px; height: 110px; background: #111; border-radius: 0 0 3px 3px; position: absolute; z-index: 2; cursor: pointer; box-sizing: border-box; flex-shrink: 0; }
         .black-key:active, .black-key.active { background: #444; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>
@@ -33,12 +38,10 @@
             </select>
             <label for="octave-select">Octave Range:</label>
             <select id="octave-select">
-                <!-- Single Octave Options -->
                 <option value="4-4">Only Octave 4 (Middle C Range)</option>
                 <option value="5-5">Only Octave 5 (High Range)</option>
                 <option value="3-3">Only Octave 3 (Low Range)</option>
                 <option value="2-2">Only Octave 2 (Deep Bass Range)</option>
-                <!-- Multi-Octave Options -->
                 <option value="4-5">Middle C (C4) to C6</option>
                 <option value="3-4">C3 to C5</option>
                 <option value="2-3">C2 to Middle C (C4)</option>
