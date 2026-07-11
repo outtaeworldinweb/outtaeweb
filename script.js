@@ -62,6 +62,7 @@ function generatePiano() {
             
             if (isBlack) {
                 key.classList.add("black-key");
+                // 10px accounts for the container padding
                 const leftPosition = (whiteKeyCount * 40) + 10 - 12;
                 key.style.left = `${leftPosition}px`;
             } else {
@@ -81,8 +82,10 @@ function generatePiano() {
         }
     }
 
+    // Set the explicit physical pixel width of the black container bed
     pianoContainer.style.width = `${(whiteKeyCount * 40)}px`;
 
+    // Append items in structural layer order so absolute positioning renders properly
     keyElements.forEach(k => {
         if (!k.classList.contains("black-key")) pianoContainer.appendChild(k);
     });
@@ -91,15 +94,13 @@ function generatePiano() {
     });
 }
 
-// FIX: Optimized and safely upscaled for children using CSS zooming
 function drawNote(note, octave, clef) {
     const div = document.getElementById("output");
     div.innerHTML = "";
     
-    // Apply styling zoom directly to the container to safely scale everything by 1.5x
-    div.style.transform = "scale(1.5)";
+    // Smooth children-friendly CSS scaling adjustments
+    div.style.transform = "scale(1.4)";
     div.style.transformOrigin = "top center";
-    div.style.marginBottom = "60px"; // Add buffer margin to prevent overlap from scaling
 
     if (typeof Vex === 'undefined') {
         div.innerText = "Error: VexFlow library failed to load.";
@@ -107,13 +108,10 @@ function drawNote(note, octave, clef) {
     }
     
     const { Renderer, Stave, StaveNote, Voice, Formatter } = Vex.Flow;
-    
-    // Setup standard size vector template canvas
     const renderer = new Renderer(div, Renderer.Backends.SVG);
     renderer.resize(220, 140);
     const context = renderer.getContext();
     
-    // Draw the layout stave lines
     const stave = new Stave(10, 10, 200);
     stave.setContext(context).draw();
     stave.addClef(clef).setContext(context).draw();
@@ -179,4 +177,5 @@ document.getElementById("start-btn").addEventListener("click", () => {
     document.getElementById("feedback").innerText = "Game started! Find the note.";
 });
 
+// Draw default piano layout automatically on boot load
 generatePiano();
