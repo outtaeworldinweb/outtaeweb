@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Clef Quiz Game</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f4f8; display: flex; justify-content: center; padding: 20px; }
+        #game-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 800px; width: 100%; }
+        #settings { margin-bottom: 20px; padding: 15px; background: #eef2f7; border-radius: 8px; }
+        select, button { padding: 8px 12px; margin: 0 10px; font-size: 16px; border-radius: 4px; border: 1px solid #ccc; }
+        button { background-color: #007bff; color: white; cursor: pointer; border: none; }
+        button:hover { background-color: #0056b3; }
+        #canvas-container { display: flex; justify-content: center; margin: 20px 0; }
+        #feedback { font-size: 20px; font-weight: bold; height: 30px; margin-bottom: 20px; color: #333; }
+        #piano-container { display: flex; justify-content: center; }
+        .piano { display: flex; position: relative; height: 200px; padding: 10px; background: #222; border-radius: 8px; user-select: none; }
+        .white-key { width: 40px; height: 180px; background: white; border: 1px solid #ccc; border-radius: 0 0 4px 4px; box-shadow: inset 0 0 5px #ccc; position: relative; cursor: pointer; z-index: 1; box-sizing: border-box; }
+        .white-key:active, .white-key.active { background: #e0e0e0; }
+        .black-key { width: 24px; height: 110px; background: #111; border-radius: 0 0 3px 3px; position: absolute; z-index: 2; cursor: pointer; box-sizing: border-box; }
+        .black-key:active, .black-key.active { background: #444; }
+    </style>
+    <!-- VexFlow CDN for rendering musical notation -->
+    <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/cjs/vexflow.js"></script>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Note Reading Challenge</h1>
+        <div id="settings">
+            <label for="clef-select">Choose Clef:</label>
+            <select id="clef-select">
+                <option value="treble">Treble Clef</option>
+                <option value="bass">Bass Clef</option>
+            </select>
+            <label for="octave-select">Octave Range:</label>
+            <select id="octave-select">
+                <option value="4-5">Middle C (C4) to C6</option>
+                <option value="3-4">C3 to C5</option>
+                <option value="2-3">C2 to Middle C (C4)</option>
+            </select>
+            <button id="start-btn">Start Game</button>
+        </div>
+        <div id="canvas-container"><div id="output"></div></div>
+        <div id="feedback">Press "Start Game" to begin!</div>
+        <div id="piano-container"><div id="piano" class="piano"></div></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
